@@ -119,15 +119,15 @@ const main = async () => {
 
 
 
-          console.log("\n WEBCAM DE", `${webcams.localizacion}`.green);
+          console.log("\n WEBCAM DE", `${webcams.localizacion}`.toUpperCase().blue);
           console.log("==========================\n".yellow);
-          console.log("DATOS:")
+          console.log("DATOS".green)
           console.log("Localización:", `${webcams.localizacion}`.yellow)
           console.log("Región:", `${webcams.region}`.yellow)
           console.log("Estado:", `${webcams.estado}`.yellow)
           console.log("Url:", `${webcams.imagen}`.blue)
           console.log("====================================\n".yellow);
-          console.log(await terminalImage.buffer(body, { width: 85 }));
+          console.log(await terminalImage.buffer(body, { width: 95 }));
 
 
           break;
