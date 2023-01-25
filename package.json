@@ -1,0 +1,35 @@
+{
+  "name": "proyecto-final",
+  "version": "3.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:clima-app": "node weather-app/app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "bcryptjs": "^2.4.3",
+    "cloudinary": "^1.24.0",
+    "colors": "^1.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
+    "express-validator": "^6.9.2",
+    "google-auth-library": "^6.1.6",
+    "hbs": "^4.0.1",
+    "inquirer": "^7.3.3",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^5.11.15",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.5.0",
+    "socket.io": "^4.5.4",
+    "terminal-image": "^2.0.0",
+    "uuid": "^8.3.2",
+    "yargs": "^17.6.2"
+  }
+}
