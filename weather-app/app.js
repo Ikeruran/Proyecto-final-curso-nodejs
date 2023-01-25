@@ -6,6 +6,7 @@ const {
     listarLugaresestaciones,
     listarEstaciones,
     listarPrevision,
+    listarWebcamCercanas
   } = require("./inquirer");
   
   const Busquedas = require("./busquedas");
@@ -109,14 +110,14 @@ const {
           busquedas.agregarHistorial(webcamlugarSelec.nombre);
   
           const listwebcam = await busquedas.webcamCercanas(webcamlugarSelec.lat, webcamlugarSelec.lng)
-          //const listaprevision = await busquedas.prevision(lugarSelec.lat, lugarSelec.lng)
-          const listawebcam = await listarLugaresestaciones(listwebcam)
-          const webcams = await busquedas.datosDeEstaciones(lista)
           
-          const imagenes = await busquedas.webcamCercanas(webcamlugarSelec.lat, lwebcamugarSelec.lng)
-  
+          const listawebcam = await listarWebcamCercanas(listwebcam)
+          const webcams = await busquedas.imagenWebcam(listawebcam)
+          
+          
           console.log("\nwebcam".green);
-          console.log("==========================\n".yellow);      
+          console.log("==========================\n".yellow);
+          console.log(`${webcams.imagen}`)      
           break;
   
   

@@ -167,6 +167,34 @@ const listarLugaresestaciones = async (lugaresestacion = []) => {
   return id;
 };
 
+const listarWebcamCercanas = async (lugaresestacion = []) => {
+    const choices = lugaresestacion.map((lugar, i) => {
+      const idx = `${i + 1}.`.green;
+  
+      return {
+        value: lugar.id,
+        name: `${idx} ${lugar.nombre} con id:${lugar.id}`
+      };
+    });
+  
+    choices.unshift({
+      value: "0",
+      name: "0.".green + " Cancelar",
+    });
+  
+    const preguntas = [
+      {
+        type: "list",
+        name: "id",
+        message: "Seleccione lugar:",
+        choices,
+      },
+    ];
+  
+    const { id } = await inquirer.prompt(preguntas);
+    return id;
+  };
+
 const listarEstaciones = async (listaestacion = []) => {
   const choices = listaestacion.map((lugar, i) => {
     const idx = `${i + 1}.`.green;
@@ -213,4 +241,5 @@ module.exports = {
   listarLugaresestaciones,
   listarEstaciones,
   listarPrevision,
+  listarWebcamCercanas
 };

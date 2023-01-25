@@ -195,34 +195,28 @@ class Busquedas {
 
     
     
-    let web= webcams.map((webcam)=>({
-      nombre:webcam.title
+    let listawebcams= webcams.map((webcam)=>({
+      nombre:webcam.title,
+      id:webcam.id
     }))
-    return web
-    // class webwebcams{
-    //   constructor(title){
-    //     this.nombre=title
-    //   }
-    // }
+    return listawebcams
+  
+  }
 
-    // let array4=[]
-    // for (let n = 0; n < 6; n++) {
-    //   let webcamCercanas = new webwebcams(webcams.title )
-    //   array4.push(webcamCercanas)
-    // }
-
-
-
-    // return array4.map((webcam)=>({
-    //   nombre:webcam.nombre
-
-    // }))
-
+  async imagenWebcam(stationId) {
     
 
-   
+      const imagen = await axios.get(`https://api.windy.com/api/webcams/v2/list/webcam=${stationId}?show=webcams:location,image&key=${WINDY_KEY}`)
+      const respImagen= await imagen.data.result.webcams[0].image.current.preview
+
+      return {
+        imagen:respImagen
+      }
+
 
   }
+
+
 
   async tiempoEnRealTime(lat, lon) {
 
