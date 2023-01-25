@@ -6,7 +6,7 @@ const env = require("dotenv").config({
   path: `${process.cwd()}/.env`,
 });
 
-const { MAPBOX_KEY, OPENWEATHER_KEY, POSITIONSTACK_KEY, WUNDERGROUND_KEY,WINDY_KEY} = env.parsed;
+const { MAPBOX_KEY, OPENWEATHER_KEY, POSITIONSTACK_KEY, WUNDERGROUND_KEY, WINDY_KEY } = env.parsed;
 
 
 
@@ -193,27 +193,27 @@ class Busquedas {
     const webc = await axios.get(
       `https://api.windy.com/api/webcams/v2/list/nearby=${lat},${lon},20?key=${WINDY_KEY}`
     )
-    const webcams= webc.data.result.webcams
+    const webcams = webc.data.result.webcams
 
-    
-    
-    let listawebcams= webcams.map((webcam)=>({
-      nombre:webcam.title,
-      id:webcam.id
+
+
+    let listawebcams = webcams.map((webcam) => ({
+      nombre: webcam.title,
+      id: webcam.id
     }))
     return listawebcams
-  
+
   }
 
   async imagenWebcam(stationId) {
-    
+
     try {
 
       const imagen = await axios.get(`https://api.windy.com/api/webcams/v2/list/webcam=${stationId}?show=webcams:location,image&key=${WINDY_KEY}`)
-      const respImagen= await imagen.data.result.webcams[0].image.current.preview
+      const respImagen = await imagen.data.result.webcams[0].image.current.preview
 
       return {
-        imagen:respImagen
+        imagen: respImagen
       }
 
     } catch (error) {

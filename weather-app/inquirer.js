@@ -168,32 +168,32 @@ const listarLugaresestaciones = async (lugaresestacion = []) => {
 };
 
 const listarWebcamCercanas = async (lugaresestacion = []) => {
-    const choices = lugaresestacion.map((lugar, i) => {
-      const idx = `${i + 1}.`.green;
-  
-      return {
-        value: lugar.id,
-        name: `${idx} ${lugar.nombre} con id:${lugar.id}`
-      };
-    });
-  
-    choices.unshift({
-      value: "0",
-      name: "0.".green + " Cancelar",
-    });
-  
-    const preguntas = [
-      {
-        type: "list",
-        name: "id",
-        message: "Seleccione lugar:",
-        choices,
-      },
-    ];
-  
-    const { id } = await inquirer.prompt(preguntas);
-    return id;
-  };
+  const choices = lugaresestacion.map((lugar, i) => {
+    const idx = `${i + 1}.`.green;
+
+    return {
+      value: lugar.id,
+      name: `${idx} ${lugar.nombre} con id:${lugar.id}`
+    };
+  });
+
+  choices.unshift({
+    value: "0",
+    name: "0.".green + " Cancelar",
+  });
+
+  const preguntas = [
+    {
+      type: "list",
+      name: "id",
+      message: "Seleccione lugar:",
+      choices,
+    },
+  ];
+
+  const { id } = await inquirer.prompt(preguntas);
+  return id;
+};
 
 const listarEstaciones = async (listaestacion = []) => {
   const choices = listaestacion.map((lugar, i) => {
@@ -224,11 +224,13 @@ const listarEstaciones = async (listaestacion = []) => {
 };
 
 
-  async function listarPrevision(arr){
-    return arr.forEach(function (x){for (const [key, value] of Object.entries(x)) {
+async function listarPrevision(arr) {
+  return arr.forEach(function (x) {
+    for (const [key, value] of Object.entries(x)) {
       console.log(`${key}: ${value}`);
-    }} )
-  }
+    }
+  })
+}
 
 
 module.exports = {
