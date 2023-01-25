@@ -6,9 +6,7 @@
 6. En la consola, ve al directorio donde está el proyecto.
 7. Ejecuta:
 
-```bash
-  npm install
-```
+npm install
 
 8. Ejecuta:
 
