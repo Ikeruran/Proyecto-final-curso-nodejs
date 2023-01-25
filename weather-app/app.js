@@ -11,17 +11,20 @@ const {
 
 const Busquedas = require("./busquedas");
 
+const terminalImage = require('terminal-image');
+const got = require('got');
+
 
 const main = async () => {
   const busquedas = new Busquedas();
   let opt;
-  
- 
+
+
   do {
     opt = await inquirerMenu();
-    try{
+    try {
       switch (opt) {
-        
+
         case 1:
           // Mostrar mensaje
           const termino = await leerInput("Ciudad: ");
@@ -109,26 +112,37 @@ const main = async () => {
           const listwebcam = await busquedas.webcamCercanas(webcamlugarSelec.lat, webcamlugarSelec.lng)
           const listawebcam = await listarWebcamCercanas(listwebcam)
           const webcams = await busquedas.imagenWebcam(listawebcam)
-          console.log("\n WEBCAM DE",`${webcams.localizacion}`.green);
+
+
+          const body = await got(`${webcams.imagen}`).buffer();
+
+
+
+
+          console.log("\n WEBCAM DE", `${webcams.localizacion}`.green);
           console.log("==========================\n".yellow);
           console.log("DATOS:")
           console.log("Localización:", `${webcams.localizacion}`.yellow)
           console.log("Región:", `${webcams.region}`.yellow)
-          console.log("Estado:",  `${webcams.estado}`.yellow )
+          console.log("Estado:", `${webcams.estado}`.yellow)
           console.log("Url:", `${webcams.imagen}`.blue)
+          console.log("====================================\n".yellow);
+          console.log(await terminalImage.buffer(body, { width: 85 }));
+
+
           break;
 
 
       }
     } catch (error) {
 
-      console.log(`HA HABIDO UN ERROR, PRUEBA OTRA BÚSQUEDA`.red)
+      console.log(error)
 
     }
 
     if (opt !== 0) await pausa();
   } while (opt !== 0);
-  
+
 
 };
 
