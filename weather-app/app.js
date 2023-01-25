@@ -18,7 +18,7 @@ const {
   
     do {
       opt = await inquirerMenu();
-  
+        try{
       switch (opt) {
         case 1:
           // Mostrar mensaje
@@ -115,11 +115,16 @@ const {
           const webcams = await busquedas.imagenWebcam(listawebcam)
           
           
-          console.log("\nwebcam".green);
+          console.log("\n URL de la webcam".green);
           console.log("==========================\n".yellow);
           console.log(`${webcams.imagen}`)      
           break;
   
+  
+      }
+    } catch (error) {
+
+        console.log("No existen webcams para esa localización")
   
       }
   
