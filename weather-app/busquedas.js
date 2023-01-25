@@ -27,13 +27,7 @@ class Busquedas {
     });
   }
 
-  get paramsMapbox() {
-    return {
-      access_token: MAPBOX_KEY,
-      limit: 5,
-      language: "es",
-    };
-  }
+
 
   get paramsWeather() {
     return {
@@ -58,7 +52,7 @@ class Busquedas {
         lat: lugar.latitude,
       }))
     } catch (error) {
-      console.log(error);
+      console.log("error");
       return [];
     }
   }
@@ -80,40 +74,45 @@ class Busquedas {
         temp: main.temp,
       };
     } catch (error) {
-      console.log(error);
+      console.log("error");
     }
   }
 
   async tiempoEnRealTime(lat, lon) {
+    try {
 
-    const tiempoRt = await axios.get(
-      `https://api.weather.com/v3/location/near?geocode=${lat},${lon}&product=pws&format=json&apiKey=${WUNDERGROUND_KEY}`,
-    )
-    const ans = tiempoRt.data.location
 
-    class estaciones {
-      constructor(stationName, stationId, distanceKm, updateTimeUtc) {
-        this.nombre = stationName;
-        this.id = stationId;
-        this.distancia = distanceKm;
-        this.intervalo = updateTimeUtc;
+      const tiempoRt = await axios.get(
+        `https://api.weather.com/v3/location/near?geocode=${lat},${lon}&product=pws&format=json&apiKey=${WUNDERGROUND_KEY}`,
+      )
+      const ans = tiempoRt.data.location
+
+      class estaciones {
+        constructor(stationName, stationId, distanceKm, updateTimeUtc) {
+          this.nombre = stationName;
+          this.id = stationId;
+          this.distancia = distanceKm;
+          this.intervalo = updateTimeUtc;
+        }
       }
-    }
-    let array2 = []
+      let array2 = []
 
-    //filtro estaciones que no han actualizado datos recientemente
-    for (let n = 0; n < 10; n++) {
-      let estacion = new estaciones(ans.stationName[n], ans.stationId[n], ans.distanceKm[n], ans.updateTimeUtc[n])
-      let actualFecha = Date.now() / 1000
-      if ((actualFecha - estacion.intervalo) < 86400) {
-        array2.push(estacion)
+      //filtro estaciones que no han actualizado datos recientemente
+      for (let n = 0; n < 10; n++) {
+        let estacion = new estaciones(ans.stationName[n], ans.stationId[n], ans.distanceKm[n], ans.updateTimeUtc[n])
+        let actualFecha = Date.now() / 1000
+        if ((actualFecha - estacion.intervalo) < 86400) {
+          array2.push(estacion)
+        }
       }
+      return array2.map((tiempo) => ({
+        nombre: tiempo.nombre,
+        id: tiempo.id,
+        distancia: tiempo.distancia
+      }))
+    } catch (error) {
+      console.log("error")
     }
-    return array2.map((tiempo) => ({
-      nombre: tiempo.nombre,
-      id: tiempo.id,
-      distancia: tiempo.distancia
-    }))
 
   }
 
@@ -136,7 +135,7 @@ class Busquedas {
       }
     } catch (error) {
 
-      console.log(error)
+      console.log("error")
 
     }
   }
@@ -154,7 +153,7 @@ class Busquedas {
         rafagaviento: answ.metric.windgustHigh + " km/h",
       }
     } catch (error) {
-      console.log(error)
+      console.log("error")
     }
   }
 
@@ -183,26 +182,31 @@ class Busquedas {
 
       }))
     } catch (error) {
-      console.log(error)
+      console.log("error")
     }
 
   }
 
   async webcamCercanas(lat, lon) {
+    try {
 
-    const webc = await axios.get(
-      `https://api.windy.com/api/webcams/v2/list/nearby=${lat},${lon},20?key=${WINDY_KEY}`
-    )
-    const webcams = webc.data.result.webcams
+      const webc = await axios.get(
+        `https://api.windy.com/api/webcams/v2/list/nearby=${lat},${lon},20?key=${WINDY_KEY}`
+      )
+      const webcams = webc.data.result.webcams
 
 
 
-    let listawebcams = webcams.map((webcam) => ({
-      nombre: webcam.title,
-      id: webcam.id
-    }))
-    return listawebcams
+      let listawebcams = webcams.map((webcam) => ({
+        nombre: webcam.title,
+        id: webcam.id
+      }))
+      return listawebcams
+    } catch (error) {
 
+      console.log("error")
+
+    }
   }
 
   async imagenWebcam(stationId) {
@@ -210,19 +214,21 @@ class Busquedas {
     try {
 
       const imagen = await axios.get(`https://api.windy.com/api/webcams/v2/list/webcam=${stationId}?show=webcams:location,image&key=${WINDY_KEY}`)
-      const respImagen = await imagen.data.result.webcams[0].image.current.preview
+      const respImagen = await imagen.data.result.webcams[0]
 
       return {
-        imagen: respImagen
+        imagen: respImagen.image.current.preview,
+        localizacion: respImagen.location.city,
+        region: respImagen.location.region,
+        estado: respImagen.status,
       }
 
     } catch (error) {
 
-      console.log(error)
+      console.log("error")
 
     }
   }
-
 
 
   async tiempoEnRealTime(lat, lon) {

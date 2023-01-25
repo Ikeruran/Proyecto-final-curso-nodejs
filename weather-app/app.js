@@ -15,11 +15,13 @@ const Busquedas = require("./busquedas");
 const main = async () => {
   const busquedas = new Busquedas();
   let opt;
-
+  
+ 
   do {
     opt = await inquirerMenu();
-    try {
+    try{
       switch (opt) {
+        
         case 1:
           // Mostrar mensaje
           const termino = await leerInput("Ciudad: ");
@@ -68,7 +70,6 @@ const main = async () => {
           if (idd === "0") continue;
           const lugarSelec = lugars.find((l) => l.id === idd);
           busquedas.agregarHistorial(lugarSelec.nombre);
-
           const listestaciones = await busquedas.tiempoEnRealTime(lugarSelec.lat, lugarSelec.lng)
           const listaprevision = await busquedas.prevision(lugarSelec.lat, lugarSelec.lng)
           const lista = await listarEstaciones(listestaciones)
@@ -78,9 +79,6 @@ const main = async () => {
 
           console.log("\nDatos en tiempo real".green);
           console.log("==========================\n".yellow);
-          // const body = await got('imagenes.image').buffer();
-          // console.log(await terminalImage.buffer(body));
-          //console.log("Webcam más cercana:", `${imagenes.imagen}`.yellow)
           console.log("Altitud de la estación:", `${estaciones.altitud}`.yellow)
           console.log("Temperatura actual:", `${estaciones.temperatura}`.yellow)
           console.log("Sensación térmica:", `${estaciones.sensacion}`.yellow)
@@ -108,28 +106,30 @@ const main = async () => {
           if (webcamid === "0") continue;
           const webcamlugarSelec = webcamlugars.find((l) => l.id === webcamid);
           busquedas.agregarHistorial(webcamlugarSelec.nombre);
-
           const listwebcam = await busquedas.webcamCercanas(webcamlugarSelec.lat, webcamlugarSelec.lng)
-
           const listawebcam = await listarWebcamCercanas(listwebcam)
           const webcams = await busquedas.imagenWebcam(listawebcam)
-
-
-          console.log("\n URL de la webcam".green);
+          console.log("\n WEBCAM DE",`${webcams.localizacion}`.green);
           console.log("==========================\n".yellow);
-          console.log(`${webcams.imagen}`)
+          console.log("DATOS:")
+          console.log("Localización:", `${webcams.localizacion}`.yellow)
+          console.log("Región:", `${webcams.region}`.yellow)
+          console.log("Estado:",  `${webcams.estado}`.yellow )
+          console.log("Url:", `${webcams.imagen}`.blue)
           break;
 
 
       }
     } catch (error) {
 
-      console.log("No existen webcams para esa localización")
+      console.log(`HA HABIDO UN ERROR, PRUEBA OTRA BÚSQUEDA`.red)
 
     }
 
     if (opt !== 0) await pausa();
   } while (opt !== 0);
+  
+
 };
 
 main();

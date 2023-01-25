@@ -9,7 +9,7 @@ const preguntas = [
     choices: [
       {
         value: 1,
-        name: `${"1.".green} Buscar ciudad`,
+        name: `${"1.".green} Buscar ciudad(Openweather)`,
       },
       {
         value: 2,
@@ -21,7 +21,7 @@ const preguntas = [
       },
       {
         value: 4,
-        name: `${"4.".green} Webcams`,
+        name: `${"4.".green} Buscador de webcams`,
       },
       {
         value: 0,
