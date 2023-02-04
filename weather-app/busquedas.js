@@ -48,7 +48,7 @@ class Busquedas {
         lat: lugar.latitude,
       }))
     } catch (error) {
-      console.log("error");
+      console.log("Localización no encontrada".red);
       return [];
     }
   }
@@ -68,7 +68,7 @@ class Busquedas {
         temp: main.temp,
       };
     } catch (error) {
-      console.log("error");
+      console.log("Localización sin datos disponibles".red);
     }
   }
 
@@ -102,7 +102,7 @@ class Busquedas {
         distancia: tiempo.distancia
       }))
     } catch (error) {
-      console.log("error")
+      console.log("Estaciones no encontradas".red)
     }
 
   }
@@ -122,7 +122,7 @@ class Busquedas {
         observacion: eran.obsTimeLocal
       }
     } catch (error) {
-      console.log("error")
+      console.log("Los datos de esta estación no están disponibles".red)
     }
   }
 
@@ -136,7 +136,7 @@ class Busquedas {
         rafagaviento: answ.metric.windgustHigh + " km/h",
       }
     } catch (error) {
-      console.log("error")
+      console.log("Resumen del dia de hoy no disponible".red)
     }
   }
 
@@ -164,7 +164,7 @@ class Busquedas {
 
       }))
     } catch (error) {
-      console.log("error")
+      console.log("Previsión no disponible".red)
     }
 
   }
@@ -183,7 +183,7 @@ class Busquedas {
       return listawebcams
     } catch (error) {
 
-      console.log("error")
+      console.log("No hay webcams disponibles para esta localización".red)
 
     }
   }
@@ -200,7 +200,7 @@ class Busquedas {
         estado: respImagen.status,
       }
     } catch (error) {
-      console.log("error")
+      console.log("Imagen de webcam no disponible".red)
     }
   }
 

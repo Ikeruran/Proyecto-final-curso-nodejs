@@ -18,7 +18,7 @@ const got = require('got');
 const main = async () => {
   const busquedas = new Busquedas();
   let opt;
-
+  let manageError
 
   do {
     opt = await inquirerMenu();
@@ -26,6 +26,8 @@ const main = async () => {
       switch (opt) {
 
         case 1:
+
+          manageError = 1
           // Mostrar mensaje
           const termino = await leerInput("Ciudad: ");
 
@@ -59,6 +61,7 @@ const main = async () => {
           break;
 
         case 2:
+          manageError = 2
           busquedas.historialCapitalizado.forEach((lugar, i) => {
             const idx = `${i + 1}.`.green;
             console.log(`${idx} ${lugar} `);
@@ -66,6 +69,7 @@ const main = async () => {
 
           break;
         case 3:
+          manageError = 3
 
           const terminated = await leerInput("Ciudad: ");
           const lugars = await busquedas.ciudad(terminated);
@@ -79,29 +83,35 @@ const main = async () => {
           const estaciones = await busquedas.datosDeEstaciones(lista)
           const extremos = await busquedas.datosExtremos(lista)
 
-
-          console.log("\nDatos en tiempo real".green);
-          console.log("==========================\n".yellow);
-          console.log("Altitud de la estación:", `${estaciones.altitud}`.yellow)
-          console.log("Temperatura actual:", `${estaciones.temperatura}`.yellow)
-          console.log("Sensación térmica:", `${estaciones.sensacion}`.yellow)
-          console.log("Precipitacion total:", `${estaciones.precipitacion}`.yellow)
-          console.log("Humedad relativa:", `${estaciones.humedad}`.yellow)
-          console.log("Presión atmosférica:", `${estaciones.presion}`.yellow)
-          console.log("Radiación solar:", `${estaciones.radiacion}`.yellow)
-          console.log("Última actualización:", `${estaciones.observacion}`.yellow)
-          console.log("\nResumen del dia de hoy".green);
-          console.log("==========================\n".yellow);
-          console.log("Temperatura máxima:", `${extremos.tMax}`.yellow)
-          console.log("Temperatura mínima:", `${extremos.tMin}`.yellow)
-          console.log("Máxima racha de viento:", `${extremos.rafagaviento}`.yellow)
-          console.log("Lluvia de hoy:", `${estaciones.precipitacion}`.yellow)
-          console.log("\nPrevisión para los próximos días".green);
-          console.log("====================================\n".yellow);
-          const listaprev = await listarPrevision(listaprevision)
+          if (estaciones.altitud) {
+            console.log("\nDatos en tiempo real".green);
+            console.log("==========================\n".yellow);
+            console.log("Altitud de la estación:", `${estaciones.altitud}`.yellow)
+            console.log("Temperatura actual:", `${estaciones.temperatura}`.yellow)
+            console.log("Sensación térmica:", `${estaciones.sensacion}`.yellow)
+            console.log("Precipitacion total:", `${estaciones.precipitacion}`.yellow)
+            console.log("Humedad relativa:", `${estaciones.humedad}`.yellow)
+            console.log("Presión atmosférica:", `${estaciones.presion}`.yellow)
+            console.log("Radiación solar:", `${estaciones.radiacion}`.yellow)
+            console.log("Última actualización:", `${estaciones.observacion}`.yellow)
+          }
+          if (extremos.tMax) {
+            console.log("\nResumen del dia de hoy".green);
+            console.log("==========================\n".yellow);
+            console.log("Temperatura máxima:", `${extremos.tMax}`.yellow)
+            console.log("Temperatura mínima:", `${extremos.tMin}`.yellow)
+            console.log("Máxima racha de viento:", `${extremos.rafagaviento}`.yellow)
+            console.log("Lluvia de hoy:", `${estaciones.precipitacion}`.yellow)
+            console.log("\nPrevisión para los próximos días".green);
+            console.log("====================================\n".yellow);
+          }
+          if (listarPrevision) {
+            listarPrevision(listaprevision)
+          }
           break;
 
         case 4:
+          manageError = 4
 
           const webcamterminated = await leerInput("Ciudad: ");
           const webcamlugars = await busquedas.ciudad(webcamterminated);
@@ -112,31 +122,33 @@ const main = async () => {
           const listwebcam = await busquedas.webcamCercanas(webcamlugarSelec.lat, webcamlugarSelec.lng)
           const listawebcam = await listarWebcamCercanas(listwebcam)
           const webcams = await busquedas.imagenWebcam(listawebcam)
-
-
           const body = await got(`${webcams.imagen}`).buffer();
 
+          if (webcams.localizacion) {
 
-
-
-          console.log("\n WEBCAM DE", `${webcams.localizacion}`.toUpperCase().blue);
-          console.log("==========================\n".yellow);
-          console.log("DATOS".green)
-          console.log("Localización:", `${webcams.localizacion}`.yellow)
-          console.log("Región:", `${webcams.region}`.yellow)
-          console.log("Estado:", `${webcams.estado}`.yellow)
-          console.log("Url:", `${webcams.imagen}`.blue)
-          console.log("====================================\n".yellow);
-          console.log(await terminalImage.buffer(body, { width: 95 }));
-
-
+            console.log("\n WEBCAM DE", `${webcams.localizacion}`.toUpperCase().blue);
+            console.log("==========================\n".yellow);
+            console.log("DATOS".green)
+            console.log("Localización:", `${webcams.localizacion}`.yellow)
+            console.log("Región:", `${webcams.region}`.yellow)
+            console.log("Estado:", `${webcams.estado}`.yellow)
+            console.log("Url:", `${webcams.imagen}`.blue)
+            console.log("====================================\n".yellow);
+            console.log(await terminalImage.buffer(body, { width: 95 }));
+          }
           break;
-
-
       }
     } catch (error) {
-
-      console.log(error)
+      if (manageError === 1) {
+        console.log("Por favor, inténtalo de nuevo con otra localidad".red)
+      } else if (manageError === 2) {
+        console.log("Error al acceder al historial".red)
+      }
+      else if (manageError === 3) {
+        console.log("Por favor, inténtalo de nuevo con otra estacion".red)
+      } else if (manageError === 4) {
+        console.log("Por favor, inténtalo de nuevo con otra webcam".red)
+      }
 
     }
 
