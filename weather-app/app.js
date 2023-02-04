@@ -107,7 +107,7 @@ const main = async () => {
           }
           if (listarPrevision) {
             listarPrevision(listaprevision)
-          }
+          } else{console.log("Previsión no disponible".red)}
           break;
 
         case 4:
